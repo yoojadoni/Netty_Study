@@ -1,0 +1,22 @@
+
+# ################################################################
+# DEV 환경
+# ################################################################
+spring:
+  devtools.restart.enabled: true
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1430;DatabaseName=kks;sendStringParametersAsUnicode=false;encrypt=false
+    username: kks
+    password: kss
+    minimum-idle : 0
+    idle-timeout : 10000
+    maximum-pool-size : 50
+
+# ############### Socket ########################
+tcp:
+  server:
+    port: 12001
+    bossCount: 1000
+    workerCount: 1000
+    backlog: 1000

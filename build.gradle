@@ -1,0 +1,94 @@
+plugins {
+	id 'java'
+	id 'war'
+	id 'org.springframework.boot' version '2.7.5'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'kks.netty'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+
+	//mavenCentral()
+	maven {
+		url ''
+		credentials {
+			username ''
+			password ''
+		}
+		authentication {
+			basic(BasicAuthentication)
+		}
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.projectlombok:lombok:1.18.22'
+	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.apache.commons:commons-lang3'
+	implementation 'commons-io:commons-io:2.11.0'
+	implementation 'org.apache.commons:commons-text:1.10.0'
+
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	//spring-jdbc
+	implementation 'org.springframework:spring-jdbc:5.3.22'
+
+	//DB mybatis + mssql
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+
+	//gson
+	implementation 'com.google.code.gson:gson:2.9.0'
+
+	//sentry
+	implementation 'io.sentry:sentry-spring-boot-starter:6.4.1'
+	implementation 'io.sentry:sentry:6.4.1'
+	testImplementation 'io.sentry:sentry-logback:6.4.1'
+
+	//springdoc-openapi-ui
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
+
+	//junit
+	testImplementation 'junit:junit:4.13.2'
+
+	//jackson
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.13.4'
+	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.4'
+
+	//암호화
+	implementation 'org.bouncycastle:bcprov-jdk16:1.46'
+	implementation 'org.jsoup:jsoup:1.14.1'
+
+	//소켓통신
+	implementation 'org.springframework.boot:spring-boot-starter-integration'
+	implementation 'org.springframework.integration:spring-integration-ip'
+
+	implementation 'io.netty:netty-all:4.1.24.Final'
+	testCompileOnly 'org.projectlombok:lombok:1.18.12'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+}
+
+bootWar {
+	archiveName("netty.war")
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

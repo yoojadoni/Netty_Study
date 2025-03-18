@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+	<!-- ============== Basic Environment property setting  ============== -->
+	<springProperty scope="context" name="LOG_PROFILES_ACTIVE" source="spring.profiles" defaultValue="none"/>
+	<springProperty scope="context" name="LOG_LEVEL" source="logging.level.root"/>
+	<springProperty scope="context" name="TOMCAT_LOG_PATH" source="logging.tomcat.file.path"/>
+	<springProperty scope="context" name="FILE_LOG_PATH" source="logging.file.path"/>
+	
+	<!-- Pattern -->
+	<!-- <property name="LOG_PATTERN" value="%-5level %d{yyyy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/> -->
+	<property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss}] [%c{1}] [%p][%marker] %m %n"/>
+	<!-- ============== Basic Environment property setting  ============== -->
+	
+	
+	<!-- ============== START Appender Logger setting ============== -->
+	<!-- ######################################################## -->
+	<!-- # 				일반 CONSOLE LOG : 최대 60일				# -->
+	<!-- ######################################################## -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	    	<charset>UTF-8</charset>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+    </appender>
+    
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">   
+	    <!-- file path setting -->
+	    <file>${TOMCAT_LOG_PATH}/netty-global.log</file>
+	    <!-- print pattern setting -->
+	    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	    	<charset>UTF-8</charset>
+	    	<pattern>${LOG_PATTERN}</pattern>
+	    </encoder>
+	    
+	    <!-- Rolling Policy-->
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	    	<fileNamePattern>${TOMCAT_LOG_PATH}/global/netty-global.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+	    	<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	    	
+	    	<!-- Max file size kb, mb, gb -->
+	    		<maxFileSize>10MB</maxFileSize>
+	    	</timeBasedFileNamingAndTriggeringPolicy>
+	    	
+	    	<!-- Max File period-->
+	    	<maxHistory>90</maxHistory>
+	    </rollingPolicy>
+    </appender> 
+	<!-- ######################################################## -->
+	<!-- # 				ERROR CONSOLE LOG : 최대 90일				# -->
+	<!-- ######################################################## -->
+	<appender name="ERROR_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">   
+	    <!-- print pattern setting -->
+	    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	    	<charset>UTF-8</charset>
+	    	<pattern>${LOG_PATTERN}</pattern>
+	    </encoder>
+	    
+	    <!-- Rolling Policy-->
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	    	<fileNamePattern>${TOMCAT_LOG_PATH}/error/error.%d{yyyyMMdd}_%i.log</fileNamePattern>
+	    	<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	    		<maxFileSize>10MB</maxFileSize>
+	    	</timeBasedFileNamingAndTriggeringPolicy>
+	    	<maxHistory>90</maxHistory>
+	    </rollingPolicy>
+	    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+	    	<level>ERROR</level>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+	    </filter>
+    </appender> 
+    
+	<!-- ============== END Appender Logger setting ============== -->
+	
+	
+	<!-- ============== Essential Logger Setting ============== -->
+	<!-- Root Looger -->
+	
+
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework" level="ERROR"/>
+	<logger name="org.springframework.test" level="INFO"/>
+	
+	<logger name="jdbc.connection" level="DEBUG"/>
+	<logger name="jdbc.sqlonly" level="OFF"/>
+	<logger name="jdbc.sqltiming" level="ERROR"/>
+	<logger name="jdbc.resultset" level="OFF"/>
+	<logger name="jdbc.audit" level="OFF"/>
+	<logger name="jdbc.resultsettable" level="ERROR"/>
+	
+		<!-- ============== Profile setting ============== -->
+	
+	<springProfile name="dev, local">
+	<!-- ============== Custom Logger Level============== -->
+		<logger name="kr.kks" level="INFO"/>
+		
+		<root level="${LOG_LEVEL}">
+			<!-- global -->
+			<appender-ref ref="CONSOLE"/>
+			<appender-ref ref="FILE"/>
+			<appender-ref ref="ERROR_LOG"/>
+			<appender-ref ref="ONLINE"/>
+		</root>
+	</springProfile>
+	
+	<springProfile name="live">
+	<!-- ============== Custom Logger Level============== -->
+		<logger name="kr.kks" level="INFO"/>
+		
+		<root level="${LOG_LEVEL}">
+			<appender-ref ref="CONSOLE"/>
+			<appender-ref ref="FILE"/>
+			<appender-ref ref="ERROR_LOG"/>	
+			<appender-ref ref="ONLINE"/>		
+		</root>
+	</springProfile>
+	<!-- ============== Profile setting ============== -->
+
+</configuration>

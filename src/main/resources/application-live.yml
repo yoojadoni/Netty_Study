@@ -1,0 +1,52 @@
+
+# ################################################################
+# LIVE 환경
+# ################################################################
+spring:
+  devtools.restart.enabled: true
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1430;DatabaseName=kks;sendStringParametersAsUnicode=false;encrypt=false
+    username: kks
+    password: kks
+    minimum-idle : 0
+    idle-timeout : 10000
+    maximum-pool-size : 50
+# ################# Server ########################
+server:
+  port: 8090
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+  error:
+    include-exception: false
+    include-stacktrace: never
+    path: /error
+    whitelabel:
+      enabled: false
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: D:/LOG/${project.name}_LIVE/${spring.profiles.active}
+      prefix: netty_access_log
+      suffix: .txt
+      file-date-format: yy-MM-dd
+
+# ################# LOG ########################
+logging:
+  config: classpath:logback-spring.xml
+  level.root: info
+  tomcat.file.path: D:/LOG/${project.name}_LIVE/${spring.profiles.active}
+
+# ############### Socket ########################
+tcp:
+  server:
+    port: 11001
+    bossCount: 1000
+    workerCount: 1000
+    backlog: 1000
+
+
+  

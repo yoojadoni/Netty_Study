@@ -1,0 +1,45 @@
+project.name: NETTY
+spring.profiles.active: local #local, dev, live
+
+spring.jackson:
+  property-naming-strategy: LOWER_CAMEL_CASE
+
+# ################# Database ########################
+mybatis:
+  type-aliases-package: kks.netty
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+# ######## Import properties ##########
+spring.config.import: classpath:props/company-info.properties
+# ################# Server ########################
+server:
+  port: 8089
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+  error:
+    include-exception: false
+    include-stacktrace: never
+    path: /error
+    whitelabel:
+      enabled: false
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: D:/LOG/${project.name}/${spring.profiles.active}
+      prefix: netty_access_log
+      suffix: .txt
+      file-date-format: yy-MM-dd
+
+# ################# LOG ########################
+logging:
+  config: classpath:logback-spring.xml
+  level.root: info
+  tomcat.file.path: D:/LOG/${project.name}/${spring.profiles.active}
+
+
+
